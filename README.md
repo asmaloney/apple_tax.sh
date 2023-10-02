@@ -15,6 +15,8 @@ So hopefully this will be a useful reference for people who must pay Apple's ext
 
 ## How To Use
 
+### Setup
+
 1. You will need to set `SIGNING_ID` in the script to your signing ID. This is the one which looks like:
 
    ```
@@ -38,36 +40,40 @@ So hopefully this will be a useful reference for people who must pay Apple's ext
                  --password <2FA_password>
    ```
 
-4. Run the script on your application like this: `./apple_tax.sh MyApp.app`
+### Run
 
-   You should see something like this:
+Run the script on your application like this: `./apple_tax.sh MyApp.app`
 
-   ```
-   Application: /path/to/MyApp.app
-   ** Signing: /path/to/MyApp.app
-   ** Verifying: /path/to/MyApp.app
-   Executable=/path/to/MyApp.app/Contents/MacOS/MyApp
-   Identifier=MyApp
-   [...other stuff...]
+You should see something like this:
 
-   \*\* Notarizing: /path/to/MyApp.app.zip
-   [16:48:22.242Z] Debug [MAIN] Running notarytool version: 1.0.0 (27), date: 2023-10-02T16:48:22Z, command: /Applications/Xcode.app/Contents/Developer/usr/bin/notarytool submit /path/to/MyApp.app.zip --keychain-profile notarytool --verbose --wait
-   Conducting pre-submission checks for MyApp.app.zip and initiating connection to the Apple notary service...
-   [16:48:22.254Z] Debug [PREFLIGHT] MyApp.app.zip is a zip archive.
+```
+Application: /path/to/MyApp.app
+** Signing: /path/to/MyApp.app
+** Verifying: /path/to/MyApp.app
+Executable=/path/to/MyApp.app/Contents/MacOS/MyApp
+Identifier=MyApp
+[...other stuff...]
 
-   [...it will poll & wait on the "notarization" to finish...]
+** Notarizing: /path/to/MyApp.app.zip
+[16:48:22.242Z] Debug [MAIN] Running notarytool version: 1.0.0 (27), date: 2023-10-02T16:48:22Z, command: /Applications/Xcode.app/Contents/Developer/usr/bin/notarytool submit /path/to/MyApp.app.zip --keychain-profile notarytool --verbose --wait
+Conducting pre-submission checks for MyApp.app.zip and initiating connection to the Apple notary service...
+[16:48:22.254Z] Debug [PREFLIGHT] MyApp.app.zip is a zip archive.
 
-   [16:55:48.168Z] Info [API] Submission in terminal status: Accepted
-   Processing complete
-     id: SOME-ID
-     status: Accepted
-   ```
+[...it will poll & wait on the "notarization" to finish...]
 
-   If notarization fails, you can use the following command to write the errors to a JSON file (where `SOME-ID` comes from the processing result):
+[16:55:48.168Z] Info [API] Submission in terminal status: Accepted
+Processing complete
+  id: SOME-ID
+  status: Accepted
+```
 
-   ```
-   xcrun notarytool log SOME-ID --keychain-profile "notarytool" error.json
-   ```
+If notarization fails, you can use the following command to write the errors to a JSON file (where `SOME-ID` comes from the processing result):
+
+```
+xcrun notarytool log SOME-ID --keychain-profile "notarytool" error.json
+```
+
+You will need to run this script for every release of your application.
 
 ### Entitlements
 
